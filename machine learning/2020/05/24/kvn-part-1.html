@@ -9,13 +9,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras." />
 <meta property="og:description" content="First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras." />
-<link rel="canonical" href="https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html" />
-<meta property="og:url" content="https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html" />
+<link rel="canonical" href="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html" />
+<meta property="og:url" content="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html" />
 <meta property="og:site_name" content="Bernat Puig Camps" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-05-24T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras.","@type":"BlogPosting","headline":"KVN, Margaret &amp; bingo - Part 1","dateModified":"2020-05-24T00:00:00-05:00","datePublished":"2020-05-24T00:00:00-05:00","url":"https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html"},"@context":"https://schema.org"}</script>
+{"description":"First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html"},"@type":"BlogPosting","url":"https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html","headline":"KVN, Margaret &amp; bingo - Part 1","dateModified":"2020-05-24T00:00:00-05:00","datePublished":"2020-05-24T00:00:00-05:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bepuca.dev/feed.xml" title="Bernat Puig Camps" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>KVN, Margaret &amp; bingo - Part 1 | Bernat Puig Camps</title>
@@ -24,13 +24,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras." />
 <meta property="og:description" content="First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras." />
-<link rel="canonical" href="https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html" />
-<meta property="og:url" content="https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html" />
+<link rel="canonical" href="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html" />
+<meta property="og:url" content="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html" />
 <meta property="og:site_name" content="Bernat Puig Camps" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-05-24T00:00:00-05:00" />
 <script type="application/ld+json">
-{"description":"First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras.","@type":"BlogPosting","headline":"KVN, Margaret &amp; bingo - Part 1","dateModified":"2020-05-24T00:00:00-05:00","datePublished":"2020-05-24T00:00:00-05:00","url":"https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html"},"@context":"https://schema.org"}</script>
+{"description":"First part of a hopefully friendly introduction to Neural Networks and their capabilities, with practical examples in Python and Keras.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html"},"@type":"BlogPosting","url":"https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html","headline":"KVN, Margaret &amp; bingo - Part 1","dateModified":"2020-05-24T00:00:00-05:00","datePublished":"2020-05-24T00:00:00-05:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -120,13 +120,7 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i> 
       
-        <a class="category-tags-link" href="/categories/#tutorial">tutorial</a>
-         
-      
         <a class="category-tags-link" href="/categories/#machine%20learning">machine learning</a>
-         
-      
-        <a class="category-tags-link" href="/categories/#python">python</a>
         
       
       </p>
@@ -166,9 +160,9 @@ window.onload = wrap_img;
 <a href="#Neurons">Neurons </a>
 <ul>
 <li class="toc-entry toc-h3"><a href="#Artificial-neurons">Artificial neurons </a></li>
-<li class="toc-entry toc-h3"><a href="#Neural-Networks">Neural Networks </a></li>
 </ul>
 </li>
+<li class="toc-entry toc-h2"><a href="#Neural-Networks">Neural Networks </a></li>
 </ul>
 </li>
 </ul>
@@ -256,7 +250,7 @@ window.onload = wrap_img;
 <p>Here is when Neural Networks (NN) enter the game. <strong>NNs are a tool that will allow KVN to learn to recognize digits as described above.</strong>
 </p>
 <div class="flash">
-    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <svg class="octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
     <strong>Note: </strong>What we are talking here is supervised learning of image classification, in the sense that we have labeled examples to teach KVN (e.g. images of 2 that we know are a 2) and the goal is to identify which number the image represents. NNs are used in a myriad of problems, not solely in supervised learning nor image classification.
 </div>
 
@@ -1696,9 +1690,9 @@ z
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Neural-Networks">
+<h2 id="Neural-Networks">
 <a class="anchor" href="#Neural-Networks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Neural Networks<a class="anchor-link" href="#Neural-Networks"> </a>
-</h3>
+</h2>
 <p>Now that we have our neurons, we can build our neural networks by interconnecting them. This would be a simple of example of such networkNow that we have our neurons, we can build our neural networks by interconnecting them. This is simple of example of such network:</p>
 
 </div>
@@ -1720,7 +1714,7 @@ z
 <p>Returning to our original problem, we want to implement one of this Neural Networks inside KVN such that when we give him an image of a number as an input, he will then whisper which number it is as an output.
 </p>
 <div class="flash">
-    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
+    <svg class="octicon octicon-info octicon octicon-info" viewbox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 01-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 01-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg>
     <strong>Note: </strong>This example is what it is called a feedforward neural network. In these networks, there are no cycles. All information always goes forward from input to output. There are other types of neural networks with different properties, such as recurrent neural networks, but they are more complicated so we will stick to the "easy" case.
 </div>
 
@@ -1742,7 +1736,7 @@ z
   </div>
 <!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js" repo="bepuca/blog" issue-term="title" label="blogpost-comment" theme="github-light" crossorigin="anonymous" async>
-</script><a class="u-url" href="/tutorial/machine%20learning/python/2020/05/24/kvn-part-1.html" hidden></a>
+</script><a class="u-url" href="/machine%20learning/2020/05/24/kvn-part-1.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
