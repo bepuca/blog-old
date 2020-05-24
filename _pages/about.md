@@ -4,10 +4,10 @@ title: About Me
 permalink: /about/
 ---
 
-This is where you put the contents of your *About* page. Like all your pages, it's in [Markdown](https://guides.github.com/features/mastering-markdown/) format.
+> You can contact me at **bernatpuig [at] gmail [dot] com**
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+I am Bernat and I work at the intersection of data science and software engineering. Mine has been (and it is still is) a journey of beautiful discoveries. I started in physics and eventually transitioned to data science and software development. Today, I strive to embed machine learning into software solutions to help people and organizations alike focus on what matters. I thrive the most when working within diverse and multidisciplinary teams and I believe in the value of Lean and XP software principles.
 
+Curiosity driven, virtually everything interests me. This has exposed me to a myriad of technologies, frameworks and tools and it has also led me into a never-ending quest for learning and personal growth. I always enjoy engaging discussions, so please reach out to me if you want to talk about anything you find interesting.
 
-
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
+Also, I like to ski. Ah, I love skiing. 
