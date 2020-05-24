@@ -11,3 +11,5 @@ I am Bernat and I work at the intersection of data science and software engineer
 Curiosity driven, virtually everything interests me. This has exposed me to a myriad of technologies, frameworks and tools and it has also led me into a never-ending quest for learning and personal growth. I always enjoy engaging discussions, so please reach out to me if you want to talk about anything you find interesting.
 
 Also, I like to ski. Ah, I love skiing. 
+
+![](../images/about_image.jpeg)
