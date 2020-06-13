@@ -1188,18 +1188,6 @@ $$ v \rightarrow v' = v - \eta \nabla C$$
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ul>
-<li><p><a href="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html">Part 1</a>: Definition of Neural Networks at the problem at hand. Friendly context introduction.</p>
-</li>
-<li><p><a href="https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html">Part 3</a>: Actual training of a Neural Network to identify handwritten digits.</p>
-</li>
-</ul>
-
-</div>
-</div>
-</div>
 </div>
  
 
