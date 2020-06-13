@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>KVN, Margaret &amp; bingo - Part 3 | Bernat Puig Camps</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="KVN, Margaret &amp; bingo - Part 3" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits." />
+<meta property="og:description" content="Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits." />
+<link rel="canonical" href="https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html" />
+<meta property="og:url" content="https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html" />
+<meta property="og:site_name" content="Bernat Puig Camps" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html"},"@type":"BlogPosting","url":"https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html","headline":"KVN, Margaret &amp; bingo - Part 3","dateModified":"2020-06-13T00:00:00-05:00","datePublished":"2020-06-13T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://bepuca.dev/feed.xml" title="Bernat Puig Camps" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>KVN, Margaret &amp; bingo - Part 3 | Bernat Puig Camps</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="KVN, Margaret &amp; bingo - Part 3" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits." />
+<meta property="og:description" content="Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits." />
+<link rel="canonical" href="https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html" />
+<meta property="og:url" content="https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html" />
+<meta property="og:site_name" content="Bernat Puig Camps" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-13T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits.","mainEntityOfPage":{"@type":"WebPage","@id":"https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html"},"@type":"BlogPosting","url":"https://bepuca.dev/machine%20learning/2020/06/13/kvn-part-3.html","headline":"KVN, Margaret &amp; bingo - Part 3","dateModified":"2020-06-13T00:00:00-05:00","datePublished":"2020-06-13T00:00:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://bepuca.dev/feed.xml" title="Bernat Puig Camps" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Bernat Puig Camps</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">KVN, Margaret &amp; bingo - Part 3</h1><p class="page-description">Third part of a (hopefully) friendly introduction to Neural Networks and their capabilities. In this part, we will succesfully train a Neural Network with Python Keras to recognize handwritten digits.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-06-13T00:00:00-05:00" itemprop="datePublished">
+        Jun 13, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/categories/#machine learning">machine learning</a>
+        
+      
+      </p>
+    
+
+    
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h3"><a href="#Load-the-data">Load the data </a></li>
+<li class="toc-entry toc-h2"><a href="#Format-the-data">Format the data </a></li>
+<li class="toc-entry toc-h2"><a href="#Build-the-neural-network">Build the neural network </a></li>
+<li class="toc-entry toc-h2"><a href="#Insert-system-into-KVN">Insert system into KVN </a></li>
+<li class="toc-entry toc-h2"><a href="#KVN,-learn!">KVN, learn! </a></li>
+<li class="toc-entry toc-h2"><a href="#KVN,-test-time!">KVN, test time! </a></li>
+<li class="toc-entry toc-h2"><a href="#Did-we-get-lucky?">Did we get lucky? </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-06-13-kvn-part-3.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In <a href="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html">Part 1</a>, we defined what we are trying to achieve (KVN whispering Margaret the drawn numbers) and what our proposed solution (a Neural Network).</p>
+<p>In <a href="https://bepuca.dev/machine%20learning/2020/06/04/kvn-part-2.html">Part 2</a>, we introduced the key concepts for KVN to be able to learn anything at all: loss functions, gradient descent and backpropagation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now it is time to start building the system we want to implement into KVN! To do so, we will use the <strong>Keras</strong> Python library. This library is specially designed to ease the creation and implementation of neural networks. Most of the things discussed above are already implemented in the library's methods. Let's start by loaing everything we will need.
+</p>
+<div class="flash flash-warn">
+    <svg class="octicon octicon-zap" viewbox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 7H6l3-7-9 9h4l-3 7 9-9z"></path></svg>
+    <strong>Important: </strong>Even though we will use Python to implement the concepts, I aim to explain them in a way everyone can get the gist.
+</div>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">layers</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Load-the-data">
+<a class="anchor" href="#Load-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Load the data<a class="anchor-link" href="#Load-the-data"> </a>
+</h3>
+<p>First of all, we need some examples for KVN to learn. Recall that we intend to make KVN learn by showing him examples of handwritten digits and telling him what number they represent. The set of examples used for learning are called the <strong>training set</strong>. Moreover, we also need some other examples that we can show KVN to evaluate him before the big night so we are sure he will deliver. These examples are called the <strong>test set</strong>.</p>
+<p>Therefore, we need images of handwritten digits that we can show KVN so he can start learning. There is an extensively used public dataset called the <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> database of handwritten digits. This dataset contains a training set of 60000 examples and a test set of 10000 examples. Luckily for us, this dataset is already implemented in the Keras library so we can directly use it!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"X_train original shape"</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"y_train original shape"</span><span class="p">,</span> <span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>X_train original shape (60000, 28, 28)
+y_train original shape (60000,)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can see, the training input set <em>X_train</em> contains 60000 greyscale images of size 28x28 px. The training label set <em>y_train</em> contains 60000 labels corresponding to each image. Let's look at some of the samples:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot some MNIST examples.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray_r'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Digit: </span><span class="si">{</span><span class="n">y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdAAAAClCAYAAADsxazGAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4yLjEsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy+j8jraAAAP7UlEQVR4nO3da4xU1ZrG8WeJyv2igoabzaiEi3pALqIwRxDxGlGIZmAiCBKcjjdMhMELztgRdDjoMVHBKDoZQYWREJABPUYlImNAQbRBOREYjygMggc7wEEMCL3mQzeZ3vvd9mV1Vdeurv8v6Q/vw+pdq2RZL7tq1d7Oey8AAFA3p+R6AgAA5CMaKAAAAWigAAAEoIECABCABgoAQAAaKAAAAQq+gTrnXnTO/UumxwLVYd0hF1h3meUa8/dAnXM7JZ0j6bikE5L+LGmhpPne+/J6HnuYpNe9913q8DslkmZIOlol/p33/i/1mQvSJYXrzkmaLWlyZfSKpId8Y/6fvwClbd1V+d3TJW2W1Drk99OsEM5AR3rvW0sqUsWLyIOS/j2H83nTe9+qyg/Ns3FK07r7J0mjJPWR9DtJIyUV52guyK40rbuT/lnSX3M8h6wohAYqSfLeH/Te/5ekMZImOOcukiTn3KvOuVknxznnpjvnfnDO7XHOTXbOeefcBVXHOudaSvqTpE7OucOVP51y8byQbilZdxMk/dF7v9t7/7+S/ihpYoafKlIkJetOzrm/kzRO0r9l+jmmQcE00JO89xsk7Zb0+/ifOeeuk/SApBGSLpA07DeO8bOk6yXtqXImucc59/fOuQM1TGGkc67MObfVOXdXfZ4L8keO192FqngL7aTNlRkauRS83j0v6RFJv4Q/i/QquAZaaY+kMxPyf5D0H977rd77I5JK6nJQ7/3H3vt21QxZIqmXpA6S7pT0r865f6zLYyCv5WrdtZJ0sEp9UFKrys9G0fjlZN0550ZLauK9X16X4+aTQm2gnSWVJeSdJO2qUu9KGBPMe/9n7/0e7/0J7/06Sc9KujWTj4FUy8m6k3RYUpsqdRtJh9lEVDAafN1Vvu07R9KUTB0zjQqugTrnBqpiQX2c8Mc/SKq6S6xrNYfKxIuPl8RZQAHI8brbqooNRCf1qczQyOVw3XWX1E3Sfzvn9kpaJqmjc26vc65bHY+VWgXTQJ1zbZxzN0r6T1Vsx/4yYdgSSXc453o551pIqu47UPskneWca1uHOdzsnDvDVbhUFf86W1GHp4E8k4Z1p4qvMjzgnOtcufljqqRX6/D7yDMpWHdfqaIh9638mVx5jL7K/DssOVMIDXSlc+5vqvhLmyHpGUl3JA303v9J0nOSPpT0P5I+qfyjowljv5a0WNJfnHMHnHOdnHO/d84drmYuYyuP+zdVvKj9wXu/IOxpIeXStO5ekrRS0peqeGF7uzJD45OKdee9P+6933vyRxVvIZdX1ifq+RxTo1FfSKG+nHO9VPGC09R7fzzX80FhYN0hF1h3dVcIZ6B14pwb7Zxr6pw7Q9IfJK1kMSHbWHfIBdZd/dBArWJJP0r6RhWXw+K7mmgIrDvkAuuuHngLFwCAAJyBAgAQgAYKAECAU+syuH379r5bt25Zmgryyc6dO7V///6sXwSCNYeqNm3atN973yHbj8O6w0nVvdbVqYF269ZNn332WWZmhbw2YMCABnkc1hyqcs591xCPw7rDSdW91vEWLgAAAWigAAAEoIECABCABgoAQAAaKAAAAWigAAAEoIECABCABgoAQAAaKAAAAWigAAAEoIECABCABgoAQAAaKAAAAWigAAAEoIECABCABgoAQIA63VAbQHps2rQpUs+dO9eMWbBggckmTJhgsvvuuy9S9+vXr56zAxo/zkABAAhAAwUAIAANFACAADRQAAACsIko5sSJE5H64MGDQcdJ2tBx5MgRk23bts1k8+bNi9TTpk0zYxYvXmyyZs2aReqHHnrIjHnsscfsZJF6paWlJhsxYkSkPnTokBnjnDPZwoULTbZixYpIXVZWVtcpAvW2evVqk912220m++ijjyJ1jx49sjan6nAGCgBAABooAAABaKAAAARoFJ+Bfv/995H62LFjZsy6detM9vHHH5vswIEDkXrp0qX1nF31unbtarL4l9qXL19uxrRu3dpkffr0idRDhw6t5+yQCxs2bDDZLbfcYrL45/NJn3e2adPGZKeffrrJ9u/fH6nXr19vxvTv379Wx0LU2rVrTfbTTz9F6tGjRzfUdFJt48aNJhswYEAOZlI7nIECABCABgoAQAAaKAAAAWigAAAEyLtNRF988YXJhg8fHqlDL36QbU2aNDHZrFmzTNayZctInfRF4k6dOpnsjDPOiNS5+nIxflvSxTQ+//zzSD1u3DgzZs+ePUGP1717d5NNnz7dZGPGjInUQ4YMMWOS1uojjzwSNK9CsmbNGpPt2LEjUhfqJqLy8vJI/e2335ox8U2ikuS9z9qc6oIzUAAAAtBAAQAIQAMFACAADRQAgAB5t4moqKjIZO3bt4/U2d5ENGjQIJPFN/B8+OGHZkzSVVvGjx+fuYkh9YqLi022aNGirD3epk2bTHb48GGTxa9albTx5csvv8zYvArJggULTDZ48OAczCR9fvjhh0g9f/58MybpNbJnz55Zm1NdcAYKAEAAGigAAAFooAAABMi7z0DPPPNMkz311FOReuXKlWbMJZdcYrIpU6bU+Hh9+/Y12QcffGCy+MUPvvrqKzPmueeeq/Hx0Hgkff64atUqk9XmS+HDhg0z2Y033hipp02bZsYkXXAj6f+F2nyGn5Yvr+eb+MUC8P8mT55c45iki4GkBWegAAAEoIECABCABgoAQAAaKAAAAfJuE1GSUaNGRer43VkkqXXr1ibbsmWLyV555ZVInbQxI75hKMlFF11ksqQvCaNxKC0tNdmIESNMdujQIZM55yL1DTfcYMYsXrzYZPGLHTzxxBNmTNImjQ4dOpisT58+1c5Jkt5++22Txe8k069fPzOmkCS9puzbty8HM8kPBw4cqHHM1Vdf3QAzCcMZKAAAAWigAAAEoIECABCABgoAQIBGsYkork2bNrUa17Zt2xrHxDcVSdLYsWNNdsop/FukkGzfvj1Sz5kzx4xJuitQ0gaejh07RuoJEyaYMa1atTJZ/EpE8TrTjhw5YrKnn346UmfzzjL54J133jHZL7/8koOZpE/SZqqdO3fW+HudO3fOwmwyg1d9AAAC0EABAAhAAwUAIAANFACAAI1yE1FtlZSUmCx+C6r41V6k5NuZXXPNNZmaFlLm6NGjJotfoSrpKj1Jm9kWLlxosgEDBkTqfNp0smvXrlxPIVW2bdtWq3EXXnhhlmeSPklXddu7d2+k7tGjhxmTdBW5tOAMFACAADRQAAAC0EABAAhQ0J+BJt1V5eWXX47USXeXuPPOO0125ZVXRur451qSdM8995gs6a4XSJf4HUek5M8841asWGGyoUOHZmROyG8DBw7M9RSCxe8o9O6775oxr7/+usnee++9Go/96KOPmqxdu3Z1mF3D4gwUAIAANFAAAALQQAEACEADBQAgQEFvIkpy/vnnR+pXX33VjLnjjjtMFv+CfNIX5n/++WeT3X777SaL350DufXAAw+YzHsfqYcNG2bG5POGofjzq+84RJWVlWXkOJs3bzZZeXm5yVavXm2y3bt3R+pjx46ZMW+88UaNx2/evLkZM2jQIJM1bdrUZL/++mukTtp8mWacgQIAEIAGCgBAABooAAABaKAAAARgE1ENRo8ebbILLrjAZFOnTo3USXdsefjhh0323XffmWzGjBmRunPnzjXOE5mxatUqk5WWlposfgWpm266KWtzyoWkK2QlZX379m2I6eSNpA01Sf/diouLI/WTTz4Z9HhJm4iSNnaddtppJmvRokWk7tWrlxkzadIkk/Xv3z9SJ22gO+ecc0zWpUsXk8XvPNSzZ08zJs04AwUAIAANFACAADRQAAAC8BlogIsvvthkS5YsidQrV640YyZOnGiyF1980WQ7duyI1O+//34dZ4hQ8c9kpOQvmJ999tmResyYMVmbU6YdPXrUZCUlJTX+3lVXXWWy2bNnZ2JKjcYLL7xgsqKiIpOtW7cuI4937rnnmuzmm282We/evU122WWXZWQOSebPn2+yH3/80WTnnXde1ubQEDgDBQAgAA0UAIAANFAAAALQQAEACMAmogxp165dpB4/frwZM3nyZJPF70YgSWvXro3Ua9asMWOSvryMhtOsWbNIndY76CRtGJo1a5bJ5syZE6m7du1qxsQvFiJJrVq1qsfsCsODDz6Y6yk0uKS7vyS59dZbszyT7OIMFACAADRQAAAC0EABAAhAAwUAIACbiAJs2bLFZEuXLo3UGzduNGOSNgwliV815IorrqjD7NAQ0nj3laS7xsQ3B0nSm2++abL41WuWLVuWuYkBv2HUqFG5nkK9cAYKAEAAGigAAAFooAAABKCBAgAQgE1EMdu2bYvUzz//vBmTtMFi7969QY936qn2ryB+VZtTTuHfOQ3Fe1+r7K233orUzz77bNbm9FueeeaZSD1z5kwz5uDBgyYbN26cyRYuXJi5iQEFgldmAAAC0EABAAhAAwUAIEDBfAaa9BnlokWLTDZ37txIvXPnzozNYeDAgSabMWOGydL4Jf1C4ZyrVRZfT1OmTDFjJk2aZLKzzjrLZJ988kmkfu2118yYzZs3m2zXrl2RuqioyIy57rrrTHb33XebDMiFHTt2ROrLL788RzMJwxkoAAABaKAAAASggQIAEIAGCgBAgEaxiWjfvn2ReuvWrWbMvffea7Kvv/46Y3MYNGhQpJ4+fboZE7/jhcRFEvLV8ePHI/W8efPMmPgdeiSpbdu2Jtu+fXvQHAYPHhyphw8fbsY8/vjjQccGGkJ5eXmup1AvvHoDABCABgoAQAAaKAAAAWigAAAESPUmorKyMpMVFxebrLS0NFJ/8803GZvDkCFDTDZ16lSTXXvttZG6efPmGZsDGk7SlVAuvfRSk23YsKHGYyVd/Sq+4S1J+/btTTZ27FiT5eIOMEAmrV+/PlJPnDgxNxMJxBkoAAABaKAAAASggQIAECBnn4F++umnJpszZ06k3rhxoxmze/fujM2hRYsWJovfVSPpbiktW7bM2ByQLl26dDHZsmXLTPbSSy9F6pkzZwY/5v333x+p77rrLjOme/fuwccHkB2cgQIAEIAGCgBAABooAAABaKAAAATI2Sai5cuX1yqrjd69e0fqkSNHmjFNmjQx2bRp00zWrl27oDmg8erYsaPJSkpKqq2BQnb99debbMmSJTmYSXZxBgoAQAAaKAAAAWigAAAEoIECABAgZ5uIZs+eXasMAJBfku6qkm93WqkNzkABAAhAAwUAIAANFACAADRQAAAC0EABAAhAAwUAIAANFACAADRQAAAC0EABAAhAAwUAIAANFACAADRQAAAC0EABAAjgvPe1H+zcXyV9l73pII8Uee87ZPtBWHOIYd2hof3mmqtTAwUAABV4CxcAgAA0UAAAAtBAAQAIQAMFACAADRQAgAA0UAAAAtBAAQAIQAMFACAADRQAgAD/B2O5weZlR/C1AAAAAElFTkSuQmCC%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Format-the-data">
+<a class="anchor" href="#Format-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Format the data<a class="anchor-link" href="#Format-the-data"> </a>
+</h2>
+<p>As expected, these images are just what we need for KVN to learn to assist Margaret! Now, in order to use the images in the Keras implementation of the system, they have to be formatted in a particular manner (defined by the Keras library)::</p>
+<ul>
+<li>Each pixel value goes from 0 to 255, but inputs need to be between 0 and 1. </li>
+<li>
+<p>The inputs must be vectors, not matrices.</p>
+<p>28x28 px -&gt; 784x1 px</p>
+</li>
+</ul>
+<p>There are ten categories which correspond to digits from $0$ to $9$.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Format the data shape.</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">60000</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+
+<span class="c1"># Change data type.</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float32'</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float32'</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float32'</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float32'</span><span class="p">)</span>
+
+<span class="c1"># Normalize inputs to 0-1 interval.</span>
+<span class="n">X_train</span> <span class="o">/=</span> <span class="mi">255</span>
+<span class="n">X_test</span> <span class="o">/=</span> <span class="mi">255</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Training matrix shape"</span><span class="p">,</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Testing matrix shape"</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training matrix shape (60000, 784)
+Testing matrix shape (10000, 784)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Build-the-neural-network">
+<a class="anchor" href="#Build-the-neural-network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build the neural network<a class="anchor-link" href="#Build-the-neural-network"> </a>
+</h2>
+<p>Now that we have the data, we need to <strong>build</strong> the system that we will implement to KVN, we need to build the neural network! So far, the only network that we have seen had one (dummy) input layer, one hidden layer and one output layer. There are different types of layers. The one that is fully connected to the previous and the next layer (as the ones we have seen) is called <strong>Dense</strong> in Keras. For now, we will stick to this simple <strong>architechture</strong> (i.e. network structure) and see if it works. That is, our neural network will be constituted by:</p>
+<ol>
+<li>
+<p>An input layer with $784$ inputs (one per pixel).</p>
+</li>
+<li>
+<p>A hidden Dense layer with $n=30$ neurons.</p>
+<ul>
+<li>Activation function: sigmoid</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li>
+<p>An output Dense layer with $n=10$ neurons.</p>
+<ul>
+<li>Activation function: sigmoid</li>
+</ul>
+</li>
+</ol>
+<p>The choice of $n=30$ neurons in the hidden layer is rather arbitrary. Nonetheless, the number of neurons on the output layer is directly related to the number of categories we want for KVN to learn. Since we have $10$ categories (digits), we need $10$ neurons. The idea is that KVN's guess will be related to the neuron that has the higher activation. If the neuron corresponding to the digit 3 is the one with the higher activation, KVN is saying: <em>"A 3!"</em>.</p>
+<p>Keras allows us to build our neural network in a very intuitive way. We generate what is called a <em>Sequential</em> model that basically lets us to add layers sequentially. When we add layers, there are ways to initialize the weights and biases (i.e. the parameter set) with different distributions. Nonetheless, we won't focus on this. Despite that, know that the initialization can influence the learning procedure. This makes sense since the initialization determines where in the mountain we start our downhill!</p>
+<p>Enough chit chat, let's build KVN's system!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define KVN's system.</span>
+<span class="n">kvn</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'KVN_system'</span><span class="p">)</span>
+
+<span class="c1"># Add the hidden layer, a Dense layer with 30 neurons.</span>
+<span class="c1"># The first layer also requires specification of input dimensions.</span>
+<span class="c1"># Specify the activation function of the neurons too.</span>
+<span class="n">kvn</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">784</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'hidden'</span><span class="p">))</span>
+
+<span class="c1"># Add the output layer, a Dense layer with 10 neurons (1 neuron per category).</span>
+<span class="n">kvn</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'output'</span><span class="p">))</span>
+
+<span class="c1"># Save the initial weights and biases.</span>
+<span class="n">kvn</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s1">'kvn_init_weights.h5'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Keras also allows us to check that we built the system we want. Here's how:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kvn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Model: "KVN_system"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+hidden (Dense)               (None, 30)                23550     
+_________________________________________________________________
+output (Dense)               (None, 10)                310       
+=================================================================
+Total params: 23,860
+Trainable params: 23,860
+Non-trainable params: 0
+_________________________________________________________________
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Insert-system-into-KVN">
+<a class="anchor" href="#Insert-system-into-KVN" aria-hidden="true"><span class="octicon octicon-link"></span></a>Insert system into KVN<a class="anchor-link" href="#Insert-system-into-KVN"> </a>
+</h2>
+<p>Now that we have defined our system, we plug it into KVN. In actual terms, we <strong>compile</strong> the model (we won't delve into that either). The only thing that we need to know is that we need to specify the loss function (measure of how wrong KVN is), the optimizer (KVN's learning method) we want to use in the system and which metrics we want to get (the accuracy of KVN's predictions).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Compile the model.</span>
+<span class="n">kvn</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="c1"># Loss function (wrongness meter). </span>
+    <span class="n">loss</span><span class="o">=</span><span class="s1">'sparse_categorical_crossentropy'</span><span class="p">,</span>
+    <span class="c1"># Optimizer (learning method).</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">'sgd'</span><span class="p">,</span>
+    <span class="c1"># Result evaluation.</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="KVN,-learn!">
+<a class="anchor" href="#KVN,-learn!" aria-hidden="true"><span class="octicon octicon-link"></span></a>KVN, learn!<a class="anchor-link" href="#KVN,-learn!"> </a>
+</h2>
+<p>Now that we have plugged the system into KVN it is time to start showing him the images of the numbers. 60000 of them. This phase is usually called the model <strong>fit</strong> because we are fitting all parameters to minimize the cost function. The <strong>validation set</strong> specified here answers to a similar idea as the test set. We have a set of examples to validate how KVN's is doing during the learning phase. 
+</p>
+<div class="flash flash-success">
+    <svg class="octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M16 8.5l-6 6-3-3L8.5 10l1.5 1.5L14.5 7 16 8.5zM5.7 12.2l.8.8H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h7c.55 0 1 .45 1 1v6.5l-.8-.8c-.39-.39-1.03-.39-1.42 0L5.7 10.8a.996.996 0 000 1.41v-.01zM4 4h5V3H4v1zm0 2h5V5H4v1zm0 2h3V7H4v1zM3 9H2v1h1V9zm0-2H2v1h1V7zm0-2H2v1h1V5zm0-2H2v1h1V3z"></path></svg>
+    <strong>Tip: </strong>For proper development, we would want a validation set <em>and</em> a test set. Validation sets are used to try different strategies and asses which one is best during training. The test set should only be used at the end to provide an idea on how good KVN will work in the real situation.
+</div>
+Let's learn!
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">64</span> <span class="c1"># Number of training examples in each mini-batch.</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>     <span class="c1"># Number of epochs.</span>
+
+<span class="c1"># Fit the model and store information in history.</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">kvn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="KVN,-test-time!">
+<a class="anchor" href="#KVN,-test-time!" aria-hidden="true"><span class="octicon octicon-link"></span></a>KVN, test time!<a class="anchor-link" href="#KVN,-test-time!"> </a>
+</h2>
+<p>After this training session, KVN should have learned something. Now we want to see what has he learnt. To do so, let's evaluate KVN. Let's show him the test images (which he didn't use to learn although we already used them to see how he was doing) and see how good is he at identifying the digit present.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the performance of the system with the test set.</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">kvn</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Scores contain the specified metrics.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Test loss:"</span><span class="p">,</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>     <span class="c1"># Loss function by default.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Test accuracy:"</span><span class="p">,</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># Accuracy as asked.</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Test loss: 0.2650674283504486
+Test accuracy: 0.9253000020980835
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Damn, KVN! This is a remarkably good result! An accuracy of over $0.90$ means that KVN got the digit right more than $90 \%$ of the time. This is quite a feature!</p>
+<p>Let's check some of the KVN's good guesses and some of the KVN's bad guesses to get a flavor of what he has learned.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get the predicted class for each sample in X_test.</span>
+<span class="n">predicted_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">kvn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Check which are the good guesses and the bad guesses.</span>
+<span class="n">correct_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">predicted_classes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">incorrect_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">y_test</span> <span class="o">!=</span> <span class="n">predicted_classes</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># And see some examples.</span>
+<span class="c1"># Good guesses (predictions).</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">correct_indexes</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray_r'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"KVN's guess: </span><span class="si">{</span><span class="n">predicted_classes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">, digit </span><span class="si">{</span><span class="n">y_test</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    
+<span class="c1"># Bad guesses (predictions).</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mf">2.5</span><span class="p">))</span>  
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">incorrect_indexes</span><span class="p">[:</span><span class="mi">3</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'gray_r'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"KVN's guess: </span><span class="si">{</span><span class="n">predicted_classes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">, digit </span><span class="si">{</span><span class="n">y_test</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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%0A">
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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AAAgKooNAAAQFcUGAACIimIDAABERbEBAACiotgAAABRUWwAAICoKDYAAEBUFBsAACAqig0AABAVxQYAAIiqSn+IDQCAuuz111/3sptvvtnLhg8f7mXnnnuulzVt2rR2OlbPMbMBAACiotgAAABRUWwAAICoKDYAAEBUFBsAACAqvo1SJD7//PNgvnr16mrvs6yszMsmTpzoZd27d/eyzp07B/d5wgknVLs/KJzNmzcH82bNmnlZgwa8B0H9de+993rZwoULvWzBggVeduGFF3rZmDFjvCz0mlrqeFUBAABRUWwAAICoKDYAAEBUFBsAACAqFohG9sILL3jZnDlzvGz+/PnB7VeuXFntY3fp0sXLVq1a5WW7du3KvM89e/ZUuz8onB/84AfBPHSq5SuuuMLLQqdprqs2bNjgZa1atQq2bdiQl8j65tRTT/WyWbNmednu3bu9bObMmV726quvetn48eO9bOjQocH+lMoYY2YDAABERbEBAACiotgAAABRUWwAAICoSmNlSg199NFHXjZ58mQve/jhh71s586dXuacq52O7cOKFSv2y3FQ/E466aRgfvfdd3vZ6aefHrs7BTVp0iQvCy0GlKR77rkndnewn11//fVe9tVXX3lZaJysXbvWyzZt2uRlw4YN87J8i/1D/enQoUOwbV3GzAYAAIiKYgMAAERFsQEAAKKi2AAAAFGxQDSDNWvWeFlo8VAhHXPMMV7GnznGXp06dSp0Fwri5Zdf9rLQnxjPdxZdFoiWhhtuuMHLOnbs6GXr1q3zstAXCB544AEvmzBhQvDY27dvz7R9XcfMBgAAiIpiAwAAREWxAQAAoqLYAAAAUdW7BaKhs7mFFnP26dMnuP2gQYO87KCDDvKy5s2be9khhxziZaHFPwMHDvSyfIs5e/Xq5WU9evTwssaNG3tZ6M+HozTVxwVnWcybN8/LQotB851hFaVryJAhmdqFzhId+v2Qb4HolClTvKx9+/ZeNnr06Ez9KVbMbAAAgKgoNgAAQFQUGwAAICqKDQAAEFWdXiC6Y8cOLxswYICXvf322142a9aszMfp3bu3ly1dutTLysvLvWz16tVeFjozXYMG1H2oHe+++66Xhf40dil45ZVXMrUbO3Zs5J6gvgotzh8/fryXhZ6XkvT888972dy5c73spptu8rJGjRpl6WJR4DccAACIimIDAABERbEBAACiotgAAABR1ZkFol9++aWXXXzxxV4WWgw6atQoL+vfv3+N+hNaDBpy5JFH1ug4QFUtWrTIy7Zs2ZJ5+7p65tnQmUF3797tZaEFfX379o3SJ2CvadOmBfPQ8y30HN66dauXtWnTpuYd20+Y2QAAAFFRbAAAgKgoNgAAQFQUGwAAICqKDQAAEFVRfhtl+/btXnbHHXd42Zw5c7wstDp35MiRXtakSZNq9g4oHqHnyoQJEzJvP3jwYC+76qqratSnQpk9e7aXLVu2zMtCt69FixZR+gTsle/bKKWCmQ0AABAVxQYAAIiKYgMAAERFsQEAAKIqygWis2bN8rI777zTy8rKyrxs4cKFXta8efPa6RhQZEaMGOFlK1asyLz92LFja7M7BfXoo48WugsoQTt37vSy22+/3cuqsnB74MCBXtayZcuqdazIMLMBAACiotgAAABRUWwAAICoKDYAAEBURblA9LXXXsvUrkePHl7WsWPH2u4OUBSef/55L5s+fXqmbcvLy4N5ly5datKlgtmyZYuXrV+/vgA9QTG47rrrvOz+++8Ptu3QoYOXnX/++V4WWpDZqFEjLwudyfrNN98MHjuka9euXvbII494WcOGRfnrOjNmNgAAQFQUGwAAICqKDQAAEBXFBgAAiKooV5zMmDEjU7sXX3zRy2699VYv+973vudlocWlQLHYunWrl912221eFlooGfLcc88F84MPPrhqHSsSH3/8sZeF/px8yOWXX17b3UGBhc7iaWbBtmvXrvWyKVOmeJlzLvM+K2rXrp2XXX311cG2Q4cO9bLQIta6jpkNAAAQFcUGAACIimIDAABERbEBAACiKsoFohs3bvSy0MKcXbt2eVlogej48eO9bNiwYcFj9+rVy8s+/fRTLzv66KO9rFu3bsF9VrR8+XIv6927d7AtZ0QtTRs2bPCyxYsXZ9p28ODBXnbcccfVuE/1xWGHHVboLqCWhc4WGnoeSOHn0bRp07ws9BzcvHlzpv5cdNFFXnbLLbdk2ra+YmYDAABERbEBAACiotgAAABRUWwAAICoinKB6I033uhlEyZMqPb+vv76ay+bPHlysG2+PLa2bdsG8379+nnZ008/Hbk32J/mzp3rZaNGjcq07be//W0vC43hAw44ILh96CyJO3bsyHTskAMPPNDLdu/enXn7pk2belnWszaGhBYJHnXUUdXeH4pT6E+/n3322cG2oXzMmDFeFjqLb+gLCJMmTfKyZ5991stGjhwZ7E+pfAmAmQ0AABAVxQYAAIiKYgMAAERFsQEAAKIqygWid955p5eFzsh2ySWXeFloMdqaNWu8LLRotJBCZ6uTpOnTp3tZ9+7dvazUz05Xl82ePdvL3nrrrUzbhs6ie/vtt2c+duh58OCDD2bevqIePXp42dKlSzNv/9RTT3nZeeed52UvvfRSpv21aNHCy2qy4BSlo1mzZl4W+p3z0EMPeVno9Ty04LSUMLMBAACiotgAAABRUWwAAICoKDYAAEBUFBsAACCqovw2SujUyieffLKXffDBB5n297vf/c7L8p1Cedy4cV72xhtvZDpODKHTSS9ZsqQAPUEsM2fOrPa2q1ev9rJCnXJfkrZv3+5lRx55pJeFVvpL4dX+PXv29LKNGzdm6s/w4cMztUNxGj9+vJf17ds3U7a/7Nmzx8tCr9uljpkNAAAQFcUGAACIimIDAABERbEBAACiKsoForXtzDPPzNx22bJlXhZaIHrggQd62dChQ73syiuv9LKJEyd62dSpU7N2EfXM6NGjvezaa6/NtG1ZWZmXtWvXzsuaNm2auT9nnHGGl4UWaIeccsopXvbFF194WevWrYPbL1iwwMt+9atfednixYu97MQTT/Syzp07B4+D4jNjxgwvu/vuu70s9DpbUx9++KGX3XfffV42b948Lwv9yQBOie9jZgMAAERFsQEAAKKi2AAAAFFRbAAAgKhKYoFoVZx11lleNmrUKC8LnYH04Ycf9rKVK1d62fz586vXuVSHDh1qtD2Ky7Bhw7ysV69embZt3769l7Vq1crLmjRpUvWO1ZKWLVtmbjtgwAAvmz17dqZte/fu7WXNmzfPfGzsP6Gzbj755JNetmPHDi8LLc7fsGGDl+3cuTN47MceeyxT9sknn3hZaOFnaPH1Nddc42WlvliZmQ0AABAVxQYAAIiKYgMAAERFsQEAAKJigWgFxx57rJcNGTLEy5555plM+wudcS6kYcPwQ3HOOed42V133ZVpn6gbQo991jN2loKxY8d62YgRI7wstFgWxWnTpk1eNmfOnEzbHn744V4W44yd/fr187ILLrjAy/r37+9lXbt2rfX+1HXMbAAAgKgoNgAAQFQUGwAAICqKDQAAEBULRCto3Lixl02aNMnLtm3b5mVLlizxsvXr13tZeXm5l1122WXB/owbNy6YA6WiTZs2mTLUHaGz3A4cONDL5s6dW+1j/PSnPw3mBx98sJeFvgTQp0+fah8bPmY2AABAVBQbAAAgKooNAAAQFcUGAACIigWiGbRr187LXnjhBS974oknvGzRokVeFlr02bZt2+p1DgDqmNBZc3/7298WoCfYX5jZAAAAUVFsAACAqCg2AABAVBQbAAAgKhaI1qJLL700UwYAQClhZgMAAERFsQEAAKKi2AAAAFFRbAAAgKgoNgAAQFQUGwAAICqKDQAAEBXFBgAAiIpiAwAAREWxAQAAoqLYAAAAUVFsAACAqCg2AABAVBQbAAAgKooNAAAQFcUGAACIimIDAABERbEBAACiotgAAABRUWwAAICozDmXvbHZRkmfxOsO6rEy51ybQneiKhjvqCHGPEpJpeO9SsUGAABAVfExCgAAiIpiAwAAREWxAQAAoqLYAAAAUVFsAACAqCg2AABAVBQbAAAgKooNAAAQFcUGAACI6v8AT/6MmFnJqTwAAAAASUVORK5CYII=%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Well, as we can see above, KVN got trouble learning to identify digits of rather poor handwritting but correctly identified more standard ones. So, for now, I think we can say that KVN did a good job!</p>
+<p>Okay okay, good compared to what? The most trivial system would be to randomly pick a class. That is, that when we show KVN an image he randomly says a digit. In that case, he will be right, on average, $10 \%$ of the time (because we have $10$ classes). So our system is quite better than the random system! Nonetheless, <em>how good is the accuracy</em> heavily depends on the problem. If we were trying to identify if a patient has cancer, for instance, this accuracy might still be too low. For the case at hand, that accuracy will absolutely do for good old Margaret.</p>
+<p>KVN got a cookie!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/blog/images/copied_from_nb/kvn/kvn_cookie.jpg" alt="" title="KVN and his well-deserved cookie."></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Did-we-get-lucky?">
+<a class="anchor" href="#Did-we-get-lucky?" aria-hidden="true"><span class="octicon octicon-link"></span></a>Did we get lucky?<a class="anchor-link" href="#Did-we-get-lucky?"> </a>
+</h2>
+<p>As you might have realized, I made some <em>arbitrary</em> choices regarding some of the parameters such as the the number of neurons in the hidden layer or the epochs trained. Will KVN always perform that good independently of the choices we make? The short answer is no.</p>
+<p>In the next (and final part), we will discover some of the factors that can dramatically impact the learning capabilities and performance of neural networks. We will talk about hyperparameters and regularization.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>
+<p><a href="https://bepuca.dev/machine%20learning/2020/05/24/kvn-part-1.html">Part 1</a>: Definition of Neural Networks at the problem at hand. Friendly context introduction.</p>
+</li>
+<li>
+<p><a href="https://bepuca.dev/machine%20learning/2020/06/01/kvn-part-2.html">Part 2</a>: The training building blocks: loss functions, gradient descent and backpropagation.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="bepuca/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/machine%20learning/2020/06/13/kvn-part-3.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/bepuca" title="bepuca"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/bepuca_" title="bepuca_"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
